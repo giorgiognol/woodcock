@@ -57,9 +57,6 @@
   .leg-name { font-weight: 600; }
   .leg-detail { color: var(--ink-soft); font-size: 0.85rem; margin-top: 2px; }
   .num-cell { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .cost-free { color: var(--good); font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
-  .cost-paid { color: var(--accent-2); font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
-  .cost-mixed { color: var(--warn); font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
   .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap; }
   .pill.done  { background: var(--good-soft); color: var(--good); }
   .pill.queue { background: var(--accent-soft); color: var(--accent); }
@@ -84,9 +81,21 @@
   .reset-line button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .callout { margin-top: 40px; border: 1px solid var(--paper-line); border-left: 3px solid var(--stop); background: var(--paper-dim); padding: 18px 22px; font-size: 0.9rem; color: var(--ink-soft); }
   .callout strong { color: var(--ink); font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+  .mapwrap { border: 1px solid var(--paper-line); background: var(--paper-dim); padding: 16px; }
+  .mapwrap svg { width: 100%; height: auto; display: block; }
+  .maplabel { font-family: 'IBM Plex Mono', monospace; font-size: 11px; fill: var(--ink-soft); }
+  .maplegend { display: flex; gap: 24px; margin-top: 14px; font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink-soft); flex-wrap: wrap; }
+  .maplegend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .dot.it { background: var(--accent); }
+  .dot.en { background: var(--accent-2); }
   .tplcard { border: 1px solid var(--paper-line); background: var(--paper-dim); padding: 22px 24px; margin-bottom: 18px; }
-  .tplcard h3 { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin: 0 0 12px; }
+  .tplcard h3 { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); margin: 0 0 4px; }
+  .tplcard .tplmeta { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--ink-faint); margin-bottom: 12px; }
+  .tplcard .tplsubject { font-weight: 600; margin-bottom: 8px; }
   .tplcard pre { white-space: pre-wrap; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.92rem; color: var(--ink); margin: 0; line-height: 1.6; }
+  .tplgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 800px) { .tplgrid { grid-template-columns: 1fr; } }
   footer { padding: 22px 0 40px; border-top: 1px solid var(--paper-line); font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
   @media (max-width: 640px) { thead { display: none; } tbody tr { display: block; border-bottom: 1px solid var(--ink); padding: 12px 0; } tbody td { display: block; border: none; padding: 3px 0; } tbody td[data-label]::before { content: attr(data-label); display: block; font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; text-transform: uppercase; color: var(--ink-faint); letter-spacing: 0.05em; } }
   a { color: var(--accent); }
@@ -120,70 +129,214 @@
       <p class="section-intro">Non richiedono azione.</p>
       <div class="tablewrap">
         <table>
-          <thead><tr><th>Tratta</th><th>Esito</th><th>Costo</th><th>Stato</th></tr></thead>
+          <thead><tr><th>Tratta</th><th>Esito</th><th>Stato</th></tr></thead>
           <tbody>
             <tr>
               <td data-label="Tratta"><div class="leg-name">Scraping Yachtall.com</div><div class="leg-detail">Europa (33 paesi) + Turchia + Tunisia — bypassato Cloudflare con Chrome reale non-headless</div></td>
               <td data-label="Esito" class="num-cell">2.497 unici<br><span style="color:var(--ink-faint);font-size:0.8rem;">(2.638 grezzi, dedup)</span></td>
-              <td data-label="Costo"><span class="cost-free">gratis</span></td>
               <td data-label="Stato"><span class="pill done">completato</span></td>
             </tr>
             <tr>
               <td data-label="Tratta"><div class="leg-name">Arricchimento email — Italia</div><div class="leg-detail">Risoluzione sito ufficiale + estrazione email, OpenRouter modelli :free</div></td>
               <td data-label="Esito" class="num-cell">447/447<br><span style="color:var(--ink-faint);font-size:0.8rem;">375 siti · 186 email</span></td>
-              <td data-label="Costo"><span class="cost-free">gratis</span></td>
               <td data-label="Stato"><span class="pill done">completato</span></td>
             </tr>
             <tr>
               <td data-label="Tratta"><div class="leg-name">Ricognizione fonti alternative</div><div class="leg-detail">Europages (IT/TR/PL/TN/AL) + Nauticexpo — mappato cosa c'è e cosa è bloccato</div></td>
               <td data-label="Esito" class="num-cell">~23 sbloccati<br><span style="color:var(--ink-faint);font-size:0.8rem;">su 284+102+28 dichiarati</span></td>
-              <td data-label="Costo"><span class="cost-free">gratis</span></td>
               <td data-label="Stato"><span class="pill done">completato</span></td>
             </tr>
             <tr>
               <td data-label="Tratta"><div class="leg-name">Scraping ATECO 30.11 + 30.12</div><div class="leg-detail">registroaziende.it — registro imprese reale. Bypass Cloudflare + fix paginazione via ordinamento alfabetico</div></td>
               <td data-label="Esito" class="num-cell">2.349 uniche<br><span style="color:var(--ink-faint);font-size:0.8rem;">354/354 (30.11) + 1.995/2.925 (30.12)</span></td>
-              <td data-label="Costo"><span class="cost-free">gratis</span></td>
               <td data-label="Stato"><span class="pill done">completato</span></td>
             </tr>
             <tr>
               <td data-label="Tratta"><div class="leg-name">Migrazione su VPS + 2 bug corretti</div><div class="leg-detail">3 pipeline spostate su VPS Hostinger (systemd, Xvfb). Fix: DuckDuckGo bloccava IP datacenter; crash Chrome aveva prodotto ~2.000 righe vuote scambiate per "fatte", ora scartate e browser auto-rilanciato</div></td>
               <td data-label="Esito" class="num-cell">3 servizi attivi<br><span style="color:var(--ink-faint);font-size:0.8rem;">indipendenti dal Mac</span></td>
-              <td data-label="Costo"><span class="cost-free">gratis</span></td>
               <td data-label="Stato"><span class="pill done">completato</span></td>
             </tr>
             <tr>
               <td data-label="Tratta"><div class="leg-name">Albania — QKB + Maps</div><div class="leg-detail">Registro imprese ufficiale (ricerca per nome) + Outscraper Maps per query categoria/città</div></td>
               <td data-label="Esito" class="num-cell">347 aziende<br><span style="color:var(--ink-faint);font-size:0.8rem;">181 QKB + 166 Maps</span></td>
-              <td data-label="Costo"><span class="cost-mixed">misto</span></td>
               <td data-label="Stato"><span class="pill done">completato</span></td>
             </tr>
             <tr>
               <td data-label="Tratta"><div class="leg-name">Scavo profondo + pattern-guess + verifica email</div><div class="leg-detail">Scavo chi-siamo/impressum reali + guess info@/contact@ su dominio noto, verificati con MillionVerifier</div></td>
               <td data-label="Esito" class="num-cell">140 email verificate<br><span style="color:var(--ink-faint);font-size:0.8rem;">+37 catch-all, su 442 tentate</span></td>
-              <td data-label="Costo"><span class="cost-paid">a pagamento</span></td>
               <td data-label="Stato"><span class="pill done">completato</span></td>
             </tr>
             <tr>
               <td data-label="Tratta"><div class="leg-name">Apify Maps + email enrichment</div><div class="leg-detail">1.000 aziende senza email → actor Apify con contact enrichment. Controllo automatico gratuito post-hoc (nome azienda deve comparire sul sito trovato)</div></td>
               <td data-label="Esito" class="num-cell">570 email (64%)<br><span style="color:var(--ink-faint);font-size:0.8rem;">410 confermate · 123 sospette · 8 non verificabili</span></td>
-              <td data-label="Costo"><span class="cost-paid">a pagamento</span></td>
               <td data-label="Stato"><span class="pill done">completato</span></td>
             </tr>
             <tr>
               <td data-label="Tratta"><div class="leg-name">Apify mirato — Italia/Polonia/Turchia + ATECO</div><div class="leg-detail">Round 2, solo paesi target reali e ATECO attive. Query migliorata con categoria esplicita — precisione dal 20% al 43%</div></td>
               <td data-label="Esito" class="num-cell">295 email nuove<br><span style="color:var(--ink-faint);font-size:0.8rem;">82 yachtall (IT/PL/TR) + 213 ATECO</span></td>
-              <td data-label="Costo"><span class="cost-paid">a pagamento</span></td>
               <td data-label="Stato"><span class="pill done">completato</span></td>
             </tr>
             <tr>
               <td data-label="Tratta"><div class="leg-name">Pipeline email — 100% del dataset processato</div><div class="leg-detail">yachtall e ATECO a fine coda sul VPS, nessuna azienda rimasta da tentare con metodi gratuiti</div></td>
               <td data-label="Esito" class="num-cell">2.497/2.497 + 2.349/2.349<br><span style="color:var(--ink-faint);font-size:0.8rem;">1.561 email totali</span></td>
-              <td data-label="Costo"><span class="cost-free">gratis</span></td>
               <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+            <tr>
+              <td data-label="Tratta"><div class="leg-name">Campagne cold outreach — Instantly (IT/EN)</div><div class="leg-detail">2 campagne, sequenza a 2 step (invio + follow-up a 4 giorni), spintax su due varianti per l'email 1. Mittenti dedicati woodcockboats.com, già scaldati</div></td>
+              <td data-label="Esito" class="num-cell">606 IT + 668 EN<br><span style="color:var(--ink-faint);font-size:0.8rem;">lead con email confermata, deduplicati</span></td>
+              <td data-label="Stato"><span class="pill queue">in bozza</span></td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </section>
+
+    <section id="mappa">
+      <h2>Distribuzione lead <span class="tag">— Italia vs estero</span></h2>
+      <p class="section-intro">606 lead confermati in Italia (campagna IT), 668 nel resto di Europa, Turchia, Tunisia e Albania (campagna EN). Dimensione del cerchio proporzionale al numero di aziende.</p>
+      <div class="mapwrap">
+        <svg viewBox="0 0 760 580" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="330" cy="175" r="26.7" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Paesi Bassi/Holanda: 167</title></circle>
+          <circle cx="400" cy="210" r="21.0" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Germania: 88</title></circle>
+          <circle cx="240" cy="155" r="17.9" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Gran Bretagna: 55</title></circle>
+          <circle cx="470" cy="195" r="17.0" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Polonia: 47</title></circle>
+          <circle cx="280" cy="280" r="16.9" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Francia: 46</title></circle>
+          <circle cx="640" cy="430" r="16.5" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Turchia: 43</title></circle>
+          <circle cx="440" cy="70" r="15.3" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Svezia: 34</title></circle>
+          <circle cx="200" cy="420" r="14.9" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Spagna: 31</title></circle>
+          <circle cx="560" cy="460" r="13.8" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Grecia: 24</title></circle>
+          <circle cx="470" cy="350" r="12.6" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Croazia: 17</title></circle>
+          <circle cx="390" cy="40" r="12.4" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Norvegia: 16</title></circle>
+          <circle cx="540" cy="50" r="11.8" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Finlandia: 13</title></circle>
+          <circle cx="390" cy="140" r="11.8" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Danimarca: 13</title></circle>
+          <circle cx="455" cy="330" r="10.8" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Slovenia: 9</title></circle>
+          <circle cx="360" cy="270" r="10.8" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Svizzera: 9</title></circle>
+          <circle cx="430" cy="280" r="10.2" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Austria: 7</title></circle>
+          <circle cx="140" cy="430" r="10.2" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Portogallo: 7</title></circle>
+          <circle cx="700" cy="150" r="10.2" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Russia: 7</title></circle>
+          <circle cx="600" cy="260" r="9.9" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Ucraina: 6</title></circle>
+          <circle cx="430" cy="240" r="9.9" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Repubblica Ceca: 6</title></circle>
+          <circle cx="520" cy="140" r="9.6" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Lituania: 5</title></circle>
+          <circle cx="310" cy="220" r="9.2" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Belgio: 4</title></circle>
+          <circle cx="530" cy="115" r="8.8" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Lettonia: 3</title></circle>
+          <circle cx="480" cy="290" r="8.8" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Ungheria: 3</title></circle>
+          <circle cx="170" cy="175" r="8.3" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Irlanda: 2</title></circle>
+          <circle cx="630" cy="505" r="7.6" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Cipro: 1</title></circle>
+          <circle cx="330" cy="320" r="7.6" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Monaco: 1</title></circle>
+          <circle cx="530" cy="90" r="7.6" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Estonia: 1</title></circle>
+          <circle cx="545" cy="410" r="7.6" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Bulgaria: 1</title></circle>
+          <circle cx="500" cy="365" r="7.6" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Serbia: 1</title></circle>
+          <circle cx="400" cy="540" r="7.6" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Tunisia: 1</title></circle>
+          <circle cx="525" cy="440" r="34.0" fill="var(--accent-2)" fill-opacity="0.75" stroke="var(--ink)" stroke-width="1"><title>Albania: 347</title></circle>
+          <circle cx="430" cy="380" r="34.0" fill="var(--accent)" fill-opacity="0.85" stroke="var(--ink)" stroke-width="1.5"><title>Italia: 606</title></circle>
+
+          <text x="330" y="142.3" text-anchor="middle" class="maplabel">Paesi Bassi (167)</text>
+          <text x="400" y="183.0" text-anchor="middle" class="maplabel">Germania (88)</text>
+          <text x="240" y="131.1" text-anchor="middle" class="maplabel">UK (55)</text>
+          <text x="470" y="172.0" text-anchor="middle" class="maplabel">Polonia (47)</text>
+          <text x="280" y="257.1" text-anchor="middle" class="maplabel">Francia (46)</text>
+          <text x="640" y="407.5" text-anchor="middle" class="maplabel">Turchia (43)</text>
+          <text x="440" y="48.7" text-anchor="middle" class="maplabel">Svezia (34)</text>
+          <text x="525" y="400.0" text-anchor="middle" class="maplabel">Albania (347)</text>
+          <text x="430" y="340.0" text-anchor="middle" class="maplabel" style="font-weight:600;">Italia (606)</text>
+        </svg>
+        <div class="maplegend">
+          <span><i class="dot it"></i> Italia — campagna IT</span>
+          <span><i class="dot en"></i> Estero (30 paesi) — campagna EN</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="template">
+      <h2>Template outreach <span class="tag">— Instantly, 2 campagne</span></h2>
+      <p class="section-intro">Sequenza a 2 step (invio + follow-up a 4 giorni). L'email 1 gira in spintax su due varianti. Mittente: Nicola Del Governatore, woodcockboats.com.</p>
+
+      <div class="tplgrid">
+        <div class="tplcard">
+          <h3>IT · email 1 · variante A</h3>
+          <div class="tplsubject">Partnership per produzione piccola serie di una barca</div>
+          <pre>Buongiorno,
+
+Abbiamo una barca già progettata, presentata in alcune fiere di settore dove ha raccolto interesse da parte di alcuni acquirenti. Cerchiamo un cantiere che possa quotarci una produzione artigianale, poche unità, non una linea di produzione.
+
+Prima di mandarvi le specifiche, mi piacerebbe fare una breve chiamata per presentarvi il progetto e capire se ha senso per voi.
+
+Siete disponibili questa settimana?
+
+Cordiali saluti,
+Nicola Del Governatore</pre>
+        </div>
+
+        <div class="tplcard">
+          <h3>IT · email 1 · variante B</h3>
+          <div class="tplsubject">Cantiere per piccola serie, barca già pronta</div>
+          <pre>Buongiorno,
+
+Abbiamo una barca pronta, già portata in fiera, con un po' di interesse concreto da parte di acquirenti. Cerchiamo un cantiere per una produzione artigianale, poche unità.
+
+Prima delle specifiche preferirei sentirci al telefono, giusto per presentarvi il progetto e capire se può interessarvi.
+
+Avete tempo questa settimana?
+
+Cordiali saluti,
+Nicola Del Governatore</pre>
+        </div>
+
+        <div class="tplcard">
+          <h3>IT · email 2 · follow-up (+4gg)</h3>
+          <div class="tplsubject">Breve seguito</div>
+          <pre>Buongiorno,
+
+Non ho avuto riscontro alla mia mail di qualche giorno fa. Cerchiamo un cantiere disponibile a quotarci una produzione artigianale di una barca già progettata, poche unità.
+
+Se non è il momento giusto va benissimo, mi faccia sapere e non la disturbo oltre.
+
+Cordiali saluti,
+Nicola Del Governatore</pre>
+        </div>
+
+        <div class="tplcard">
+          <h3>EN · email 1 · variant A</h3>
+          <div class="tplsubject">Partnership for small-batch production of a boat</div>
+          <pre>Good morning,
+
+We have a boat already designed and shown at a few industry trade fairs, where it drew interest from some buyers. We are looking for a shipyard that can quote us a craft production run, a small number of units, not a production line.
+
+Before sending specifications, I would like to have a short call to introduce the project and see if it makes sense for you.
+
+Are you available this week?
+
+Kind regards,
+Nicola Del Governatore</pre>
+        </div>
+
+        <div class="tplcard">
+          <h3>EN · email 1 · variant B</h3>
+          <div class="tplsubject">Shipyard for a small series, boat already built</div>
+          <pre>Good morning,
+
+We have a boat ready, already shown at a trade fair, with some concrete interest from buyers. We are looking for a shipyard for a craft production run, a small number of units.
+
+Before the specifications I would rather talk on the phone, just to introduce the project and see if it could interest you.
+
+Do you have time this week?
+
+Kind regards,
+Nicola Del Governatore</pre>
+        </div>
+
+        <div class="tplcard">
+          <h3>EN · email 2 · follow-up (+4d)</h3>
+          <div class="tplsubject">Quick follow-up</div>
+          <pre>Good morning,
+
+I have not heard back on my note from a few days ago. We are looking for a shipyard available to quote us a craft production run of a boat already designed, a small number of units.
+
+If this is not the right time, no problem, let me know and I will not follow up again.
+
+Kind regards,
+Nicola Del Governatore</pre>
+        </div>
       </div>
     </section>
 
@@ -196,21 +349,16 @@
         <label class="route" data-id="r3"><input type="checkbox"><span><div class="route-name">Outscraper Maps — Albania</div><div class="route-detail">Unica via nota per coprire l'Albania (oggi: zero copertura ovunque)</div></span><span class="route-time">minuti</span></label>
         <label class="route" data-id="r4"><input type="checkbox" checked disabled><span><div class="route-name">Kompass.com</div><div class="route-detail">Abbandonata — directory sostituita da tool a pagamento/trial, nessun accesso libero. Sostituita da ATECO/registroaziende.it</div></span><span class="route-time">scartata</span></label>
         <label class="route" data-id="r5"><input type="checkbox"><span><div class="route-name">Coda ATECO 30.12 (sharding per provincia)</div><div class="route-detail">registroaziende.it ha un cap infrastrutturale a ~2.000 righe per query — sotto quel tetto ci sono ~930 aziende residue, recuperabili spezzando la query per provincia</div></span><span class="route-time">~30 min</span></label>
+        <label class="route" data-id="r6"><input type="checkbox"><span><div class="route-name">Avviare le campagne Instantly</div><div class="route-detail">Lead pronti (606 IT + 668 EN), sequenza spintax pronta — manca solo il caricamento lead + attivazione</div></span><span class="route-time">da confermare</span></label>
       </div>
       <p class="reset-line">stato salvato solo su questo browser &middot; <button type="button" id="resetBtn">azzera spunte</button></p>
       <div class="callout"><strong>Acque non cartografate.</strong> Albania: zero copertura su ogni directory gratuita testata (Yachtall non la elenca, Europages restituisce 0 fornitori). Google Custom Search API: chiusa ai nuovi clienti, scartata. Europages: il tetto di ~23 risultati per combinazione paese+categoria è il funnel di vendita del sito, non un bug.</div>
-    </section>
-
-    <section id="template">
-      <h2>Template outreach <span class="tag">— in preparazione</span></h2>
-      <p class="section-intro">Copy per il primo contatto con i cantieri. Testo finale da confermare.</p>
-      <div class="tplcard"><h3>placeholder</h3><pre>In attesa del testo finale delle mail (variante IT, formale, subject: "Partnership per produzione piccola serie di una barca").</pre></div>
     </section>
   </main>
 
   <footer>
     <span>Woodcock &middot; Astra K</span>
-    <span>yachtall &middot; openrouter :free &middot; apify &middot; outscraper</span>
+    <span>yachtall &middot; openrouter :free &middot; apify &middot; outscraper &middot; instantly</span>
   </footer>
 </div>
 
