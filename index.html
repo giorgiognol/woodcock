@@ -102,6 +102,15 @@
   .tplcard pre { white-space: pre-wrap; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.92rem; color: var(--ink); margin: 0; line-height: 1.6; }
   .tplgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   @media (max-width: 800px) { .tplgrid { grid-template-columns: 1fr; } }
+  .blockgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+  .srcblock { border: 1px solid var(--paper-line); background: var(--paper-dim); padding: 16px 18px; }
+  .srcblock .src-name { font-weight: 600; margin-bottom: 4px; }
+  .srcblock .src-detail { color: var(--ink-soft); font-size: 0.84rem; }
+  .steplist { counter-reset: step; display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 14px; border: 1px solid var(--paper-line); background: var(--paper); padding: 14px 16px; align-items: start; }
+  .step::before { counter-increment: step; content: counter(step); font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--accent); font-size: 1.1rem; }
+  .step .step-name { font-weight: 600; }
+  .step .step-detail { color: var(--ink-soft); font-size: 0.86rem; margin-top: 2px; }
   footer { padding: 22px 0 40px; border-top: 1px solid var(--paper-line); font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
   @media (max-width: 640px) { thead { display: none; } tbody tr { display: block; border-bottom: 1px solid var(--ink); padding: 12px 0; } tbody td { display: block; border: none; padding: 3px 0; } tbody td[data-label]::before { content: attr(data-label); display: block; font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; text-transform: uppercase; color: var(--ink-faint); letter-spacing: 0.05em; } }
   a { color: var(--accent); }
@@ -315,6 +324,34 @@ If this is not the right time, no problem, let me know and I will not follow up 
 Kind regards,
 Nicola Del Governatore</pre>
         </div>
+      </div>
+    </section>
+
+    <section id="fonti">
+      <h2>Fonti <span class="tag">— da dove viene ogni dato</span></h2>
+      <p class="section-intro">Nessun dato inventato o comprato in blocco: ogni riga è tracciabile alla fonte che l'ha prodotta.</p>
+      <div class="blockgrid">
+        <div class="srcblock"><div class="src-name">Yachtall.com</div><div class="src-detail">Directory cantieri Europa, Turchia, Tunisia. Scraping diretto, Cloudflare bypassato con Chrome reale</div></div>
+        <div class="srcblock"><div class="src-name">registroaziende.it</div><div class="src-detail">Registro imprese italiano, ATECO 30.11 + 30.12. Nome, città, fatturato, P.IVA, stato attività</div></div>
+        <div class="srcblock"><div class="src-name">QKB Albania</div><div class="src-detail">Registro imprese ufficiale albanese, ricerca per nome, nessun accesso a pagamento</div></div>
+        <div class="srcblock"><div class="src-name">Outscraper Maps</div><div class="src-detail">Google Maps per categoria/città — usato per Albania (unica via) e dealer scraping</div></div>
+        <div class="srcblock"><div class="src-name">OpenRouter :free</div><div class="src-detail">Modelli gratuiti per risoluzione sito ufficiale ed estrazione email dal contenuto delle pagine</div></div>
+        <div class="srcblock"><div class="src-name">Apify (contact enrichment)</div><div class="src-detail">Ricerca mirata su Google Maps + estrazione email dal sito trovato, con controllo automatico di corrispondenza nome-azienda</div></div>
+        <div class="srcblock"><div class="src-name">MillionVerifier</div><div class="src-detail">Verifica SMTP reale di ogni indirizzo (non un match testuale) — crediti già posseduti</div></div>
+        <div class="srcblock"><div class="src-name">Instantly</div><div class="src-detail">Invio, sequenze, mittenti dedicati woodcockboats.com già scaldati</div></div>
+      </div>
+    </section>
+
+    <section id="metodo">
+      <h2>Come abbiamo lavorato <span class="tag">— la pipeline passo passo</span></h2>
+      <div class="steplist">
+        <div class="step"><div><div class="step-name">Scraping delle fonti primarie</div><div class="step-detail">Yachtall (Europa/Turchia/Tunisia), registroaziende.it (ATECO nautica Italia), QKB Albania — tutto gratuito, bypass Cloudflare con Chrome reale non-headless</div></div></div>
+        <div class="step"><div><div class="step-name">Arricchimento email gratuito</div><div class="step-detail">Risoluzione sito ufficiale + estrazione email dalla pagina con modelli OpenRouter :free, poi scavo profondo su pagine chi-siamo/impressum per chi restava senza</div></div></div>
+        <div class="step"><div><div class="step-name">Pattern-guess + prima verifica gratuita</div><div class="step-detail">Per chi aveva sito ma non email: tentativi info@/contact@ sul dominio noto, verificati gratis via SMTP diretto dove possibile</div></div></div>
+        <div class="step"><div><div class="step-name">Apify mirato sui buchi rimasti</div><div class="step-detail">Ricerca Google Maps + estrazione email/telefono per chi restava scoperto, con controllo automatico anti falsi positivi (nome azienda sul sito trovato)</div></div></div>
+        <div class="step"><div><div class="step-name">Consolidamento in un unico CSV</div><div class="step-detail">Tutte le fonti unite, deduplicate per email, con stato di verifica e fonte tracciati riga per riga</div></div></div>
+        <div class="step"><div><div class="step-name">Verifica reale con MillionVerifier</div><div class="step-detail">Ogni email passata da un controllo SMTP vero, non solo un match testuale — separati indirizzi validi, catch-all e non validi</div></div></div>
+        <div class="step"><div><div class="step-name">Split e attivazione outreach</div><div class="step-detail">Liste IT/EN filtrate sulle sole email valide, campagne Instantly con sequenza a 2 step e spintax, mittenti dedicati già scaldati</div></div></div>
       </div>
     </section>
 
