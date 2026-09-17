@@ -106,6 +106,13 @@
   .srcblock { border: 1px solid var(--paper-line); background: var(--paper-dim); padding: 16px 18px; }
   .srcblock .src-name { font-weight: 600; margin-bottom: 4px; }
   .srcblock .src-detail { color: var(--ink-soft); font-size: 0.84rem; }
+  .reggrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .regblock { border: 1px solid var(--paper-line); background: var(--paper); padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+  .regblock .reg-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .regblock .leg-name { font-weight: 600; line-height: 1.3; }
+  .regblock .leg-detail { color: var(--ink-soft); font-size: 0.83rem; flex-grow: 1; }
+  .regblock .reg-esito { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; font-size: 0.9rem; font-weight: 600; color: var(--ink); border-top: 1px solid var(--paper-line); padding-top: 8px; margin-top: auto; }
+  .regblock .reg-esito .sub { display: block; color: var(--ink-faint); font-weight: 400; font-size: 0.76rem; margin-top: 2px; }
   .steplist { counter-reset: step; display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
   .step { display: grid; grid-template-columns: 34px 1fr; gap: 14px; border: 1px solid var(--paper-line); background: var(--paper); padding: 14px 16px; align-items: start; }
   .step::before { counter-increment: step; content: counter(step); font-family: 'IBM Plex Mono', monospace; font-weight: 700; color: var(--accent); font-size: 1.1rem; }
@@ -142,72 +149,67 @@
     <section id="registro">
       <h2>Registro di bordo <span class="tag">— tratte già navigate</span></h2>
       <p class="section-intro">Non richiedono azione.</p>
-      <div class="tablewrap">
-        <table>
-          <thead><tr><th>Tratta</th><th>Esito</th><th>Stato</th></tr></thead>
-          <tbody>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Scraping Yachtall.com</div><div class="leg-detail">Europa (33 paesi) + Turchia + Tunisia — bypassato Cloudflare con Chrome reale non-headless</div></td>
-              <td data-label="Esito" class="num-cell">2.497 unici<br><span style="color:var(--ink-faint);font-size:0.8rem;">(2.638 grezzi, dedup)</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Arricchimento email — Italia</div><div class="leg-detail">Risoluzione sito ufficiale + estrazione email, OpenRouter modelli :free</div></td>
-              <td data-label="Esito" class="num-cell">447/447<br><span style="color:var(--ink-faint);font-size:0.8rem;">375 siti · 186 email</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Ricognizione fonti alternative</div><div class="leg-detail">Europages (IT/TR/PL/TN/AL) + Nauticexpo — mappato cosa c'è e cosa è bloccato</div></td>
-              <td data-label="Esito" class="num-cell">~23 sbloccati<br><span style="color:var(--ink-faint);font-size:0.8rem;">su 284+102+28 dichiarati</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Scraping ATECO 30.11 + 30.12</div><div class="leg-detail">registroaziende.it — registro imprese reale. Bypass Cloudflare + fix paginazione via ordinamento alfabetico</div></td>
-              <td data-label="Esito" class="num-cell">2.349 uniche<br><span style="color:var(--ink-faint);font-size:0.8rem;">354/354 (30.11) + 1.995/2.925 (30.12)</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Migrazione su VPS + 2 bug corretti</div><div class="leg-detail">3 pipeline spostate su VPS Hostinger (systemd, Xvfb). Fix: DuckDuckGo bloccava IP datacenter; crash Chrome aveva prodotto ~2.000 righe vuote scambiate per "fatte", ora scartate e browser auto-rilanciato</div></td>
-              <td data-label="Esito" class="num-cell">3 servizi attivi<br><span style="color:var(--ink-faint);font-size:0.8rem;">indipendenti dal Mac</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Albania — QKB + Maps</div><div class="leg-detail">Registro imprese ufficiale (ricerca per nome) + Outscraper Maps per query categoria/città</div></td>
-              <td data-label="Esito" class="num-cell">347 aziende<br><span style="color:var(--ink-faint);font-size:0.8rem;">181 QKB + 166 Maps</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Scavo profondo + pattern-guess + verifica email</div><div class="leg-detail">Scavo chi-siamo/impressum reali + guess info@/contact@ su dominio noto, verificati con MillionVerifier</div></td>
-              <td data-label="Esito" class="num-cell">140 email verificate<br><span style="color:var(--ink-faint);font-size:0.8rem;">+37 catch-all, su 442 tentate</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Apify Maps + email enrichment</div><div class="leg-detail">1.000 aziende senza email → actor Apify con contact enrichment. Controllo automatico gratuito post-hoc (nome azienda deve comparire sul sito trovato)</div></td>
-              <td data-label="Esito" class="num-cell">570 email (64%)<br><span style="color:var(--ink-faint);font-size:0.8rem;">410 confermate · 123 sospette · 8 non verificabili</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Apify mirato — Italia/Polonia/Turchia + ATECO</div><div class="leg-detail">Round 2, solo paesi target reali e ATECO attive. Query migliorata con categoria esplicita — precisione dal 20% al 43%</div></td>
-              <td data-label="Esito" class="num-cell">295 email nuove<br><span style="color:var(--ink-faint);font-size:0.8rem;">82 yachtall (IT/PL/TR) + 213 ATECO</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Pipeline email — 100% del dataset processato</div><div class="leg-detail">yachtall e ATECO a fine coda sul VPS, nessuna azienda rimasta da tentare con metodi gratuiti</div></td>
-              <td data-label="Esito" class="num-cell">2.497/2.497 + 2.349/2.349<br><span style="color:var(--ink-faint);font-size:0.8rem;">1.561 email totali</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Campagne cold outreach — Instantly (IT/EN)</div><div class="leg-detail">2 campagne, sequenza a 2 step (invio + follow-up a 4 giorni), spintax su due varianti per l'email 1. Mittenti dedicati woodcockboats.com, già scaldati</div></td>
-              <td data-label="Esito" class="num-cell">606 IT + 668 EN<br><span style="color:var(--ink-faint);font-size:0.8rem;">lead con email confermata, deduplicati</span></td>
-              <td data-label="Stato"><span class="pill queue">in bozza</span></td>
-            </tr>
-            <tr>
-              <td data-label="Tratta"><div class="leg-name">Verifica email — MillionVerifier (SMTP reale)</div><div class="leg-detail">Tutte le 1.294 email passate da controllo SMTP diretto, non solo match testuale. 4 indirizzi con prefisso sporco da scraping corretti e riverificati</div></td>
-              <td data-label="Esito" class="num-cell">910 valide · 333 catch-all · 51 non valide<br><span style="color:var(--ink-faint);font-size:0.8rem;">liste IT/EN filtrate: 445 + 465 solo valide</span></td>
-              <td data-label="Stato"><span class="pill done">completato</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="reggrid">
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Scraping Yachtall.com</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">Europa (33 paesi) + Turchia + Tunisia — bypassato Cloudflare con Chrome reale non-headless</div>
+          <div class="reg-esito">2.497 unici<span class="sub">2.638 grezzi, dedup</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Arricchimento email — Italia</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">Risoluzione sito ufficiale + estrazione email, OpenRouter modelli :free</div>
+          <div class="reg-esito">447/447<span class="sub">375 siti · 186 email</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Ricognizione fonti alternative</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">Europages (IT/TR/PL/TN/AL) + Nauticexpo — mappato cosa c'è e cosa è bloccato</div>
+          <div class="reg-esito">~23 sbloccati<span class="sub">su 284+102+28 dichiarati</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Scraping ATECO 30.11 + 30.12</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">registroaziende.it — registro imprese reale. Bypass Cloudflare + fix paginazione via ordinamento alfabetico</div>
+          <div class="reg-esito">2.349 uniche<span class="sub">354/354 (30.11) + 1.995/2.925 (30.12)</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Migrazione su VPS + 2 bug corretti</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">3 pipeline spostate su VPS Hostinger (systemd, Xvfb). Fix DuckDuckGo su IP datacenter e crash Chrome che scambiava righe vuote per "fatte"</div>
+          <div class="reg-esito">3 servizi attivi<span class="sub">indipendenti dal Mac</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Albania — QKB + Maps</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">Registro imprese ufficiale (ricerca per nome) + Outscraper Maps per query categoria/città</div>
+          <div class="reg-esito">347 aziende<span class="sub">181 QKB + 166 Maps</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Scavo profondo + pattern-guess</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">Scavo chi-siamo/impressum reali + guess info@/contact@ su dominio noto, verificati con MillionVerifier</div>
+          <div class="reg-esito">140 email verificate<span class="sub">+37 catch-all, su 442 tentate</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Apify Maps + email enrichment</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">1.000 aziende senza email → actor Apify con contact enrichment, controllo automatico anti falsi positivi</div>
+          <div class="reg-esito">570 email (64%)<span class="sub">410 confermate · 123 sospette · 8 n/d</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Apify mirato — IT/PL/TR + ATECO</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">Round 2, solo paesi target reali e ATECO attive. Query con categoria esplicita — precisione dal 20% al 43%</div>
+          <div class="reg-esito">295 email nuove<span class="sub">82 yachtall (IT/PL/TR) + 213 ATECO</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Pipeline email — 100% processato</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">yachtall e ATECO a fine coda sul VPS, nessuna azienda rimasta da tentare con metodi gratuiti</div>
+          <div class="reg-esito">2.497/2.497 + 2.349/2.349<span class="sub">1.561 email totali</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Campagne cold outreach — Instantly</div><span class="pill queue">in bozza</span></div>
+          <div class="leg-detail">2 campagne (IT/EN), sequenza a 2 step, spintax su due varianti. Mittenti dedicati woodcockboats.com, già scaldati</div>
+          <div class="reg-esito">606 IT + 668 EN<span class="sub">lead con email confermata, deduplicati</span></div>
+        </div>
+        <div class="regblock">
+          <div class="reg-top"><div class="leg-name">Verifica email — MillionVerifier</div><span class="pill done">completato</span></div>
+          <div class="leg-detail">Tutte le 1.294 email passate da controllo SMTP diretto, non solo match testuale</div>
+          <div class="reg-esito">910 valide · 333 catch-all · 51 n.v.<span class="sub">liste IT/EN filtrate: 445 + 465 solo valide</span></div>
+        </div>
       </div>
     </section>
 
