@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Woodcock — Cantieri &amp; Terzisti Nautici</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f2ecdc;
+    --paper-dim: #e7dfc6;
+    --paper-line: #cabf9c;
+    --ink: #12293b;
+    --ink-soft: #4c6072;
+    --ink-faint: #7c8b96;
+    --accent: #0f7a8c;
+    --accent-soft: #0f7a8c1f;
+    --accent-2: #a84e1c;
+    --good: #2f7d4f;
+    --good-soft: #2f7d4f1a;
+    --warn: #a2751a;
+    --warn-soft: #a2751a1a;
+    --stop: #9a3b3b;
+    --stop-soft: #9a3b3b1a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0b1b28;
+      --paper-dim: #112434;
+      --paper-line: #23404f;
+      --ink: #e4ecee;
+      --ink-soft: #a9bcc4;
+      --ink-faint: #748992;
+      --accent: #35c3d6;
+      --accent-soft: #35c3d626;
+      --accent-2: #e58a4d;
+      --good: #55c586;
+      --good-soft: #55c58622;
+      --warn: #e0ac4c;
+      --warn-soft: #e0ac4c22;
+      --stop: #e07070;
+      --stop-soft: #e0707022;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    line-height: 1.55;
+  }
+  ::selection { background: var(--accent); color: var(--paper); }
+
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); }
+
+  /* ---------------- background chart grid ---------------- */
+  .chartgrid {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(var(--paper-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+    background-size: 42px 42px;
+    opacity: 0.35;
+    mask-image: linear-gradient(to bottom, black, transparent 85%);
+  }
+
+  /* ---------------- hero ---------------- */
+  header.hero {
+    padding: clamp(48px, 9vw, 96px) 0 40px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 22px; height: 1px;
+    background: var(--accent);
+  }
+  h1 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.6rem, 7vw, 4.6rem);
+    line-height: 0.92;
+    letter-spacing: 0.005em;
+    margin: 0 0 18px;
+    text-wrap: balance;
+  }
+  h1 span { color: var(--accent); }
+  .hero-sub {
+    max-width: 62ch;
+    color: var(--ink-soft);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+  }
+
+  .instruments {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--paper-line);
+    border: 1px solid var(--paper-line);
+    margin-top: 40px;
+  }
+  .gauge { background: var(--paper); padding: 18px 20px; }
+  .gauge .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 2rem;
+    color: var(--ink);
+  }
+  .gauge .num.accent { color: var(--accent); }
+  .gauge .lbl {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-top: 4px;
+  }
+
+  /* ---------------- sections ---------------- */
+  main { padding-bottom: 80px; }
+  section { padding-top: 56px; }
+  h2 {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 1.7rem;
+    margin: 0 0 6px;
+  }
+  .section-intro {
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0 0 24px;
+    font-size: 0.95rem;
+  }
+
+  /* ---------------- log table (done) ---------------- */
+  .tablewrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+  thead th {
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    padding: 0 12px 10px;
+    border-bottom: 1px solid var(--ink);
+    white-space: nowrap;
+  }
+  tbody td { padding: 14px 12px; border-bottom: 1px solid var(--paper-line); vertical-align: top; }
+  tbody tr:hover { background: var(--paper-dim); }
+  .leg-name { font-weight: 600; }
+  .leg-detail { color: var(--ink-soft); font-size: 0.85rem; margin-top: 2px; }
+  .num-cell { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .cost-free { color: var(--good); font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
+  .cost-paid { color: var(--accent-2); font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 3px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+  }
+  .pill.done  { background: var(--good-soft); color: var(--good); }
+  .pill.queue { background: var(--accent-soft); color: var(--accent); }
+  .pill.ask   { background: var(--warn-soft); color: var(--warn); }
+  .pill.dead  { background: var(--stop-soft); color: var(--stop); }
+  .pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+
+  /* ---------------- route cards (interactive) ---------------- */
+  .routes { display: flex; flex-direction: column; gap: 10px; }
+  .route {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 18px;
+    border: 1px solid var(--paper-line);
+    background: var(--paper);
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .route:hover { border-color: var(--accent); }
+  .route.checked { background: var(--good-soft); border-color: var(--good); }
+  .route.checked .route-name { text-decoration: line-through; color: var(--ink-faint); }
+  .route input[type="checkbox"] {
+    appearance: none;
+    width: 20px; height: 20px;
+    border: 2px solid var(--ink-soft);
+    border-radius: 3px;
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    background: var(--paper);
+    flex: none;
+  }
+  .route input[type="checkbox"]::before {
+    content: '';
+    width: 10px; height: 10px;
+    transform: scale(0);
+    transition: transform 0.1s ease;
+    background: var(--good);
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 45% 65%);
+  }
+  .route input[type="checkbox"]:checked::before { transform: scale(1); }
+  .route-name { font-weight: 600; }
+  .route-detail { color: var(--ink-soft); font-size: 0.85rem; margin-top: 2px; }
+  .route-time { font-family: 'IBM Plex Mono', monospace; font-size: 0.78rem; color: var(--ink-faint); white-space: nowrap; text-align: right; }
+
+  @media (max-width: 720px) {
+    .route { grid-template-columns: auto 1fr; }
+    .route-time { grid-column: 2; justify-self: start; text-align: left; }
+  }
+
+  .reset-line {
+    margin-top: 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+  }
+  .reset-line button {
+    background: none; border: none; padding: 0;
+    color: var(--ink-faint); text-decoration: underline;
+    cursor: pointer; font: inherit;
+  }
+  .reset-line button:hover { color: var(--ink); }
+  .reset-line button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------------- callout ---------------- */
+  .callout {
+    margin-top: 40px;
+    border: 1px solid var(--paper-line);
+    border-left: 3px solid var(--stop);
+    background: var(--paper-dim);
+    padding: 18px 22px;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .callout strong { color: var(--ink); font-family: 'IBM Plex Mono', monospace; font-weight: 600; }
+
+  footer {
+    padding: 22px 0 40px;
+    border-top: 1px solid var(--paper-line);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 640px) {
+    thead { display: none; }
+    tbody tr { display: block; border-bottom: 1px solid var(--ink); padding: 12px 0; }
+    tbody td { display: block; border: none; padding: 3px 0; }
+    tbody td[data-label]::before {
+      content: attr(data-label);
+      display: block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      letter-spacing: 0.05em;
+    }
+  }
+
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="chartgrid" aria-hidden="true"></div>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Astra K &middot; Progetto interno</div>
+    <h1>Woodcock<br><span>Cantieri &amp; Terzisti Nautici</span></h1>
+    <p class="hero-sub">Mappatura e contatti di cantieri navali, terzisti compositi e produttori di catamarani in Europa, Turchia, Tunisia e Albania — per la produzione di una barca.</p>
+
+    <div class="instruments">
+      <div class="gauge"><div class="num accent">5.193</div><div class="lbl">Cantieri a bordo</div></div>
+      <div class="gauge"><div class="num">2.327</div><div class="lbl">Siti risolti</div></div>
+      <div class="gauge"><div class="num">1.561</div><div class="lbl">Email in mano</div></div>
+      <div class="gauge"><div class="num accent">703</div><div class="lbl">Email verificate</div></div>
+      <div class="gauge"><div class="num" id="progressNum">0%</div><div class="lbl">Rotte concluse</div></div>
+    </div>
+  </header>
+
+  <main>
+    <section id="registro">
+      <h2>Registro di bordo</h2>
+      <p class="section-intro">Tratte già navigate. Non richiedono azione.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Tratta</th><th>Esito</th><th>Stato</th></tr></thead>
+          <tbody>
+            <tr>
+              <td data-label="Tratta">
+                <div class="leg-name">Scraping Yachtall.com</div>
+                <div class="leg-detail">Europa (33 paesi) + Turchia + Tunisia — bypassato Cloudflare con Chrome reale non-headless</div>
+              </td>
+              <td data-label="Esito" class="num-cell">2.497 unici<br><span style="color:var(--ink-faint);font-size:0.8rem;">(2.638 grezzi, dedup)</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+            <tr>
+              <td data-label="Tratta">
+                <div class="leg-name">Arricchimento email — Italia</div>
+                <div class="leg-detail">Risoluzione sito ufficiale + estrazione email, OpenRouter modelli :free</div>
+              </td>
+              <td data-label="Esito" class="num-cell">447/447<br><span style="color:var(--ink-faint);font-size:0.8rem;">375 siti · 186 email</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+            <tr>
+              <td data-label="Tratta">
+                <div class="leg-name">Ricognizione fonti alternative</div>
+                <div class="leg-detail">Europages (IT/TR/PL/TN/AL) + Nauticexpo — mappato cosa c'è e cosa è bloccato</div>
+              </td>
+              <td data-label="Esito" class="num-cell">~23 sbloccati<br><span style="color:var(--ink-faint);font-size:0.8rem;">su 284+102+28 dichiarati</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+            <tr>
+              <td data-label="Tratta">
+                <div class="leg-name">Scraping ATECO 30.11 + 30.12</div>
+                <div class="leg-detail">registroaziende.it — registro imprese reale (nome, città, fatturato). Bypass Cloudflare + fix instabilità paginazione via ordinamento alfabetico</div>
+              </td>
+              <td data-label="Esito" class="num-cell">2.349 uniche<br><span style="color:var(--ink-faint);font-size:0.8rem;">354/354 (30.11) + 1.995/2.925 (30.12)</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+            <tr>
+              <td data-label="Tratta">
+                <div class="leg-name">Migrazione su VPS + 2 bug trovati e corretti</div>
+                <div class="leg-detail">
+                  Le 3 pipeline (email yachtall, email ATECO, stato/indirizzo) spostate da Mac a VPS Hostinger (systemd, sempre attivo, Xvfb per Chrome headless-bypass).<br>
+                  <strong>Bug 1</strong>: DuckDuckGo blocca gli IP datacenter (0 risultati) — fix: ricerca via Chrome reale invece di richieste dirette.<br>
+                  <strong>Bug 2</strong>: un crash di Chrome durante lo scraping stato/indirizzo aveva prodotto ~2.000 righe vuote scambiate per "fatte" — trovato, righe scartate, script reso resiliente (rilancia il browser da solo, non salta più righe come completate se fallisce).<br>
+                  Bonus: risolto anche un healthcheck rotto su un servizio Cap.so non collegato a questo progetto, e liberata RAM sul VPS spegnendo 2 servizi inutilizzati (omniroute, perplexica).
+                </div>
+              </td>
+              <td data-label="Esito" class="num-cell">3 servizi attivi<br><span style="color:var(--ink-faint);font-size:0.8rem;">indipendenti dal Mac</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+            <tr>
+              <td data-label="Tratta">
+                <div class="leg-name">Albania — QKB + Maps</div>
+                <div class="leg-detail">Registro imprese ufficiale albanese (ricerca per nome, no login) + Outscraper Maps per query categoria/città. Prima: zero copertura ovunque</div>
+              </td>
+              <td data-label="Esito" class="num-cell">347 aziende<br><span style="color:var(--ink-faint);font-size:0.8rem;">181 QKB + 166 Maps</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+            <tr>
+              <td data-label="Tratta">
+                <div class="leg-name">Scavo profondo + pattern-guess + verifica email</div>
+                <div class="leg-detail">Per chi aveva sito ma non email: scavo link chi-siamo/impressum reali (90 email in più) + guess info@/contact@ su dominio noto, verificati con MillionVerifier (crediti già posseduti, zero nuova spesa)</div>
+              </td>
+              <td data-label="Esito" class="num-cell">140 email verificate<br><span style="color:var(--ink-faint);font-size:0.8rem;">+37 catch-all, su 442 tentate</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+            <tr>
+              <td data-label="Tratta">
+                <div class="leg-name">Apify Maps + email enrichment</div>
+                <div class="leg-detail">1.000 aziende senza email → actor Apify con add-on "contact enrichment" (cerca il sito e ne estrae l'email). Poi controllo automatico gratuito: nome azienda deve comparire sul sito trovato, altrimenti segnata sospetta (scoperti marchi storici chiusi — es. Lanaverre, Kompier — abbinati per errore ad aziende non collegate)</div>
+              </td>
+              <td data-label="Esito" class="num-cell">570 email (64%)<br><span style="color:var(--ink-faint);font-size:0.8rem;">410 confermate · 123 sospette · 8 non verificabili</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+            <tr>
+              <td data-label="Tratta">
+                <div class="leg-name">Apify mirato — Italia/Polonia/Turchia + ATECO</div>
+                <div class="leg-detail">Round 2, ristretto ai soli paesi target reali (Italia, Polonia, Turchia) e alle ATECO attive (escluse cessate/in liquidazione per non sprecare su aziende morte). Query ATECO migliorata con categoria esplicita — precisione salita dal 20% al 43%</div>
+              </td>
+              <td data-label="Esito" class="num-cell">295 email nuove<br><span style="color:var(--ink-faint);font-size:0.8rem;">82 yachtall (IT/PL/TR) + 213 ATECO</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+            <tr>
+              <td data-label="Tratta">
+                <div class="leg-name">Pipeline email — 100% del dataset processato</div>
+                <div class="leg-detail">yachtall e ATECO arrivate entrambe a fine coda sul VPS, nessuna azienda rimasta da tentare con i metodi gratuiti</div>
+              </td>
+              <td data-label="Esito" class="num-cell">2.497/2.497 + 2.349/2.349<br><span style="color:var(--ink-faint);font-size:0.8rem;">1.561 email totali</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="rotte">
+      <h2>Rotte possibili</h2>
+      <p class="section-intro">Spunta una rotta quando è stata avviata o decisa — resta segnata su questo browser.</p>
+
+      <div class="routes" id="routeList">
+        <label class="route" data-id="r1">
+          <input type="checkbox">
+          <span>
+            <div class="route-name">Email — resto d'Europa</div>
+            <div class="route-detail">Paesi Bassi, Germania, UK, Francia, Polonia, Turchia + 27 altri paesi &rarr; ~2.050 aziende con email</div>
+          </span>
+          <span class="route-time">~5-6 giorni</span>
+        </label>
+
+        <label class="route" data-id="r2">
+          <input type="checkbox">
+          <span>
+            <div class="route-name">Apify — Europages Scraper</div>
+            <div class="route-detail">Actor dedicato, probabile bypass del paywall (23&rarr;pieno) su 414 fornitori IT+TR+PL</div>
+          </span>
+          <span class="route-time">minuti</span>
+        </label>
+
+        <label class="route" data-id="r3">
+          <input type="checkbox">
+          <span>
+            <div class="route-name">Outscraper Maps — Albania</div>
+            <div class="route-detail">Unica via nota per coprire l'Albania (oggi: zero copertura ovunque)</div>
+          </span>
+          <span class="route-time">minuti</span>
+        </label>
+
+        <label class="route" data-id="r4">
+          <input type="checkbox" checked disabled>
+          <span>
+            <div class="route-name">Kompass.com</div>
+            <div class="route-detail">Abbandonata — directory pubblica sostituita da tool EasyList a pagamento/trial, nessun accesso libero. Sostituita da ATECO/registroaziende.it</div>
+          </span>
+          <span class="route-time">scartata</span>
+        </label>
+
+        <label class="route" data-id="r5">
+          <input type="checkbox">
+          <span>
+            <div class="route-name">Coda ATECO 30.12 (sharding per provincia)</div>
+            <div class="route-detail">registroaziende.it ha un cap infrastrutturale a ~2.000 righe per query — sotto quel tetto ci sono ~930 aziende residue, recuperabili spezzando la query per provincia</div>
+          </span>
+          <span class="route-time">~30 min</span>
+        </label>
+      </div>
+
+      <p class="reset-line">stato salvato solo su questo browser &middot; <button type="button" id="resetBtn">azzera spunte</button></p>
+
+      <div class="callout">
+        <strong>Acque non cartografate.</strong> Albania: zero copertura su ogni directory gratuita testata (Yachtall non la elenca, Europages restituisce 0 fornitori). Google Custom Search API: chiusa ai nuovi clienti, scartata. Europages: il tetto di ~23 risultati per combinazione paese+categoria è il funnel di vendita del sito, non un bug.
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Woodcock &middot; Astra K</span>
+    <span>yachtall &middot; openrouter :free &middot; apify &middot; outscraper</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var KEY = 'woodcock-routes-v1';
+  var boxes = document.querySelectorAll('.route input[type="checkbox"]');
+  var progressEl = document.getElementById('progressNum');
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function save(state) {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function updateProgress() {
+    var total = boxes.length, checked = 0;
+    boxes.forEach(function (b) { if (b.checked) checked++; });
+    progressEl.textContent = total ? Math.round((checked / total) * 100) + '%' : '0%';
+  }
+
+  var state = load();
+  boxes.forEach(function (box) {
+    var id = box.closest('.route').dataset.id;
+    box.checked = !!state[id];
+    box.closest('.route').classList.toggle('checked', box.checked);
+    box.addEventListener('change', function () {
+      var s = load();
+      s[id] = box.checked;
+      save(s);
+      box.closest('.route').classList.toggle('checked', box.checked);
+      updateProgress();
+    });
+  });
+  updateProgress();
+
+  document.getElementById('resetBtn').addEventListener('click', function () {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    boxes.forEach(function (box) {
+      box.checked = false;
+      box.closest('.route').classList.remove('checked');
+    });
+    updateProgress();
+  });
+})();
+</script>
+</body>
+</html>
