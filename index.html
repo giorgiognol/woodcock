@@ -125,7 +125,7 @@
       <div class="gauge"><div class="num accent">5.193</div><div class="lbl">Cantieri a bordo</div></div>
       <div class="gauge"><div class="num">2.327</div><div class="lbl">Siti risolti</div></div>
       <div class="gauge"><div class="num">1.561</div><div class="lbl">Email in mano</div></div>
-      <div class="gauge"><div class="num accent">111</div><div class="lbl">Email verificate (SMTP)</div></div>
+      <div class="gauge"><div class="num accent">910</div><div class="lbl">Email verificate (MillionVerifier)</div></div>
     </div>
   </div>
 
@@ -192,6 +192,11 @@
               <td data-label="Esito" class="num-cell">606 IT + 668 EN<br><span style="color:var(--ink-faint);font-size:0.8rem;">lead con email confermata, deduplicati</span></td>
               <td data-label="Stato"><span class="pill queue">in bozza</span></td>
             </tr>
+            <tr>
+              <td data-label="Tratta"><div class="leg-name">Verifica email — MillionVerifier (SMTP reale)</div><div class="leg-detail">Tutte le 1.294 email passate da controllo SMTP diretto, non solo match testuale. 4 indirizzi con prefisso sporco da scraping corretti e riverificati</div></td>
+              <td data-label="Esito" class="num-cell">910 valide · 333 catch-all · 51 non valide<br><span style="color:var(--ink-faint);font-size:0.8rem;">liste IT/EN filtrate: 445 + 465 solo valide</span></td>
+              <td data-label="Stato"><span class="pill done">completato</span></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -211,10 +216,10 @@
 
     <section id="download">
       <h2>Scarica i dati <span class="tag">— CSV completo</span></h2>
-      <p class="section-intro">Azienda, paese, città, email (con stato di verifica), telefono, P.IVA, indirizzo e fonte. 1.294 righe.</p>
+      <p class="section-intro">Azienda, paese, città, email (con stato di verifica), telefono, P.IVA, indirizzo e fonte. 1.294 righe — 910 email verificate valide, 333 catch-all (dominio accetta tutto, non confermabile), 51 non valide (bounce garantito, escluse da ogni invio).</p>
       <div class="downloadbox">
         <div class="dl-info">
-          <strong>Nota onestà:</strong> le email sono verificate/confermate come indicato in ogni riga (MillionVerifier, controllo Apify o match diretto). I telefoni sono raccolti da fonti pubbliche (Yachtall, Google Maps) e <strong>non sono stati verificati</strong> con un servizio dedicato — nessun numero è stato chiamato o validato.
+          <strong>Nota onestà:</strong> tutte le 1.294 email sono state passate da MillionVerifier (controllo SMTP reale). I telefoni sono raccolti da fonti pubbliche (Yachtall, Google Maps) e <strong>non sono stati verificati</strong> con un servizio dedicato — nessun numero è stato chiamato o validato.
         </div>
         <button class="dl-btn" id="csvDlBtn">Scarica CSV</button>
       </div>
