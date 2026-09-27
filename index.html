@@ -231,16 +231,7 @@
       </div>
     </section>
 
-    <section id="download">
-      <h2>Scarica i dati <span class="tag">— CSV completo</span></h2>
-      <p class="section-intro">Azienda, paese, città, email (con stato di verifica), telefono, P.IVA, indirizzo e fonte. 1.294 righe — 910 email verificate valide, 333 catch-all (dominio accetta tutto, non confermabile), 51 non valide (bounce garantito, escluse da ogni invio).</p>
-      <div class="downloadbox">
-        <div class="dl-info">
-          <strong>Nota onestà:</strong> tutte le 1.294 email sono state passate da MillionVerifier (controllo SMTP reale). I telefoni sono raccolti da fonti pubbliche (Yachtall, Google Maps) e <strong>non sono stati verificati</strong> con un servizio dedicato — nessun numero è stato chiamato o validato.
-        </div>
-        <button class="dl-btn" id="csvDlBtn">Scarica CSV</button>
-      </div>
-    </section>
+
 
     <section id="template">
       <h2>Template outreach <span class="tag">— Instantly, 2 campagne</span></h2>
@@ -592,31 +583,7 @@ Nicola Del Governatore</pre>
   });
 })();
 
-(function () {
-  var GATE_HASH = 'ec302c652d2937be5a9dbf7feb7f82e2986eb733ed0565fc37461596319fa2c7';
-  var CSV_URL = 'woodcock_contatti.csv';
 
-  async function sha256(text) {
-    var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
-    return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
-  }
-
-  document.getElementById('csvDlBtn').addEventListener('click', async function () {
-    var pw = window.prompt('Password per scaricare il CSV:');
-    if (pw === null) return;
-    var hash = await sha256(pw);
-    if (hash !== GATE_HASH) {
-      alert('Password errata.');
-      return;
-    }
-    var a = document.createElement('a');
-    a.href = CSV_URL;
-    a.download = 'woodcock_contatti.csv';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-  });
-})();
 </script>
 </body>
 </html>
